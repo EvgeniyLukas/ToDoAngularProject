@@ -1,0 +1,44 @@
+.completed {
+  background-color: whitesmoke;
+  text-decoration: line-through;
+}
+
+.completed-id {
+  background-color: whitesmoke;
+}
+
+
+.nodata {
+  color: lightgray;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #898989;
+  font-size: 18px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.edit-icon {
+  cursor: pointer;
+  color: gray;
+  font-size: 18px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.mat-header-cell {
+  font-size: 1.063rem;
+  color: #898989 !important;
+  font-weight: normal;
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+}

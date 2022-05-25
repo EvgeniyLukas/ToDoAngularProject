@@ -1,0 +1,23 @@
+.pointer {
+  cursor: pointer;
+}
+
+.category-title {
+  width: 70%;
+  display: inline-block;
+}
+
+.all-category-title {
+  width: 85%;
+  display: inline-block;
+}
+
+.edit-category-icon-area {
+  width: 30%;
+  display: inline-block;
+  text-align: right;
+}
+
+.edit-category-icon {
+  color: #ffffff;
+}
