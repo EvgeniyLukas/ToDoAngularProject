@@ -69,7 +69,12 @@ export class CategoriesComponent implements OnInit {
   openEditDialog(category: Category) {
     console.log(category.title);
     let dialogRef = this.matDialog.open(EditCategoryDialogComponent,
-      {data: [category.title, "Редактирование категории",TypeOperation.EDIT], autoFocus: false});
+      {
+        data: [category.title,
+          "Редактирование категории", TypeOperation.EDIT],
+        width: '400px',
+        autoFocus: true
+      });
 
     dialogRef.afterClosed().subscribe(res => {
 
@@ -88,8 +93,11 @@ export class CategoriesComponent implements OnInit {
 
   openAddCategoryDialog() {
     let dialogRef = this.matDialog.open(EditCategoryDialogComponent,
-      {data: ['', "Редактирование категории", TypeOperation.ADD],
-        width: "400px"});
+      {
+        data: ['', "Добавление категории", TypeOperation.ADD],
+        width: "400px",
+        autoFocus: true
+      });
 
     dialogRef.afterClosed().subscribe(res => {
       if (res) { //если нажали ок и есть результат

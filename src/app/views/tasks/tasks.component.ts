@@ -154,14 +154,13 @@ export class TasksComponent implements OnInit {
   }
 
 
-
   //метод для редактирования задач
   openEditDialog(task: Task) {
 
     //this.updateTask.emit(task);
 
     let dialogRef = this.matDialog.open(EditTaskDialogComponent,
-      {data: [task, "Редактирование задач",TypeOperation.EDIT], autoFocus: false});
+      {data: [task, "Редактирование задачи", TypeOperation.EDIT], autoFocus: false});
 
 
     dialogRef.afterClosed().subscribe(res => {
@@ -238,7 +237,7 @@ export class TasksComponent implements OnInit {
     let task = new Task(null, '', false, null, this.selectedCategory);
 
     let dialogRef = this.matDialog.open(EditTaskDialogComponent,
-      {data: [task, "Добавление задачи", TypeOperation.ADD]});
+      {data: [task, "Добавление задачи", TypeOperation.ADD], autoFocus: true});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {//если нажали ок и есть результат
