@@ -87,4 +87,9 @@ export class ApplicationService {
   addTask(task: Task): Observable<Task> {
     return this.taskDaoImpl.add(task);
   }
+
+  addCategory(categoryTitle: string): Observable<Category> {
+    // @ts-ignore
+    return this.categoryDAOImpl.add(new Category(null, categoryTitle));
+  }
 }

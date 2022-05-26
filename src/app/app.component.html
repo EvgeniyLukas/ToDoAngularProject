@@ -4,10 +4,13 @@
   id="sidenav-main">
   <app-categories
     (selectCategory)="onSelectCategory($event)"
-    [selectedCategory]="selectedCategory"
-    [categories]="categories"
     (updateCategory)="onUpdateCategory($event)"
     (deleteCategory)="onDeleteCategory($event)"
+    (addCategory)="onAddCategories($event)"
+
+    [selectedCategory]="selectedCategory"
+    [categories]="categories"
+
   ></app-categories>
 </aside>
 

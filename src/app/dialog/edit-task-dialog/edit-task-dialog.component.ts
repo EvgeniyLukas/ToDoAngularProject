@@ -7,6 +7,7 @@ import {Priority} from "../../model/Priority";
 import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
 import {DatePipe} from "@angular/common";
 import {Validators} from "@angular/forms";
+import {TypeOperation} from "../type-operation";
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -14,26 +15,28 @@ import {Validators} from "@angular/forms";
   styleUrls: ['./edit-task-dialog.component.css']
 })
 export class EditTaskDialogComponent implements OnInit {
-
   constructor(private matDialogRef: MatDialogRef<EditTaskDialogComponent>, //для работы с диалоговым окном
-              @Inject(MAT_DIALOG_DATA) public data: [Task, string],//данные которые передали в диалоговое окно
+              @Inject(MAT_DIALOG_DATA) public data: [Task, string, TypeOperation],//данные которые передали в диалоговое окно
               private service: ApplicationService,//ссылка на наш сервис
               private matDialog: MatDialog) {//для открытия нового диалогового окна из текущего
   }
 
   categories!: Category[]
-  priorities!: Priority[]
 
+  priorities!: Priority[]
   dialogTitle!: string
+
   dialogTask!: Task
   tempTitle!: string
   tempCategory!: Category
   temPriority!: Priority;
   tmpDate!: Date;
+  private typeOperation!: TypeOperation;
 
   ngOnInit(): void {
-    this.dialogTitle = this.data[1];
     this.dialogTask = this.data[0];
+    this.dialogTitle = this.data[1];
+    this.typeOperation = this.data[2];
     this.tempTitle = this.dialogTask.title;
     // @ts-ignore
     this.tempCategory = this.dialogTask.category;
@@ -87,6 +90,13 @@ export class EditTaskDialogComponent implements OnInit {
 
   activate() {
     this.matDialogRef.close("activate");
+  }
 
+  canDeleteMethod(): boolean {
+    return this.typeOperation === TypeOperation.EDIT;
+  }
+
+  canActivateDeactivate(): boolean {
+    return this.typeOperation === TypeOperation.EDIT;
   }
 }

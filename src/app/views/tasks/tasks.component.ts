@@ -9,6 +9,7 @@ import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-d
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 import {Category} from "../../model/Category";
 import {Priority} from "../../model/Priority";
+import {TypeOperation} from "../../dialog/type-operation";
 
 @Component({
   selector: 'app-tasks',
@@ -160,7 +161,7 @@ export class TasksComponent implements OnInit {
     //this.updateTask.emit(task);
 
     let dialogRef = this.matDialog.open(EditTaskDialogComponent,
-      {data: [task, "Редактирование задач",], autoFocus: false});
+      {data: [task, "Редактирование задач",TypeOperation.EDIT], autoFocus: false});
 
 
     dialogRef.afterClosed().subscribe(res => {
@@ -236,7 +237,8 @@ export class TasksComponent implements OnInit {
     // @ts-ignore
     let task = new Task(null, '', false, null, this.selectedCategory);
 
-    let dialogRef = this.matDialog.open(EditTaskDialogComponent, {data: [task, "Добавление задачи"]});
+    let dialogRef = this.matDialog.open(EditTaskDialogComponent,
+      {data: [task, "Добавление задачи", TypeOperation.ADD]});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {//если нажали ок и есть результат

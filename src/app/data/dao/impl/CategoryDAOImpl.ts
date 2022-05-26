@@ -4,11 +4,18 @@ import {Observable, of} from "rxjs";
 import {TestData} from "../../TestData";
 
 export class CategoryDAOImpl implements CategoryDAO {
-  add(t: Category): Observable<Category> {
-    // @ts-ignore
-    return undefined;
+
+  add(category: Category): Observable<Category> {
+    if (category.id === null || category.id === 0) {
+      category.id = this.getLastIdCategory()
+    }
+    TestData.categories.push(category);
+    return of(category);
   }
 
+  private getLastIdCategory(): number {
+    return Math.max.apply(Math, TestData.categories.map(cat => cat.id)) + 1;
+  }
 
 
   get(id: number): Observable<Category> {
@@ -47,5 +54,6 @@ export class CategoryDAOImpl implements CategoryDAO {
     return of(tmpCategory);
 
   }
+
 
 }
