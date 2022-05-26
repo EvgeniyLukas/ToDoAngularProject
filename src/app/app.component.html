@@ -14,6 +14,8 @@
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
   <app-tasks [tasks]="tasks"
              [priorities]='priorities'
+             [selectedCategory]="selectedCategory"
+             (addTask)="onAddTask($event)"
              (updateTask)="onUpdateTask($event)"
              (deleteTask)="onDeleteTask($event)"
              (selectCategory)="onSelectCategory($event)"

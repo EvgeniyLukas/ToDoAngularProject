@@ -61,7 +61,7 @@ export class EditTaskDialogComponent implements OnInit {
   }
 
   onCancel() {
-    this.matDialogRef.close(this.dialogTask);
+    this.matDialogRef.close(null);
   }
 
   delete() {

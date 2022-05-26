@@ -83,4 +83,8 @@ export class ApplicationService {
   deleteCategory(id: number): Observable<Category> {
     return this.categoryDAOImpl.delete(id);
   }
+
+  addTask(task: Task): Observable<Task> {
+    return this.taskDaoImpl.add(task);
+  }
 }

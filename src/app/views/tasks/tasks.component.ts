@@ -34,6 +34,9 @@ export class TasksComponent implements OnInit {
   /*  переменная для поиска задач*/
   searchTaskText = '';
 
+  selectedPriorityFilter!: Priority;
+
+
   // переменная для фильтрации тайтлов
   @Output()
   private filterByTitle = new EventEmitter<string>();
@@ -44,6 +47,9 @@ export class TasksComponent implements OnInit {
 
   @Output()
   private filterByPriority = new EventEmitter<Priority>();
+
+  @Output()
+  private addTask = new EventEmitter<Task>();
 
   selectedStatusFilter!: Boolean;
 
@@ -71,6 +77,9 @@ export class TasksComponent implements OnInit {
   //private matDialogRef: MatDialogRef<EditTaskDialogComponent>,
   //             @Inject(MAT_DIALOG_DATA) public data: [Task, string],
 
+
+  @Input()
+  selectedCategory!: Category;
 
   constructor(
     private applicationService: ApplicationService,
@@ -143,10 +152,10 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  //метод для редактирования задач
-  selectedPriorityFilter!: Priority;
 
-  openDialog(task: Task) {
+
+  //метод для редактирования задач
+  openEditDialog(task: Task) {
 
     //this.updateTask.emit(task);
 
@@ -220,5 +229,19 @@ export class TasksComponent implements OnInit {
       this.selectedPriorityFilter = priority;
       this.filterByPriority.emit(this.selectedPriorityFilter);
     }
+  }
+
+  openAddTaskDialog() {
+    //делаем все то же самое что и при редактровании, но только передаем пустой объект Task
+    // @ts-ignore
+    let task = new Task(null, '', false, null, this.selectedCategory);
+
+    let dialogRef = this.matDialog.open(EditTaskDialogComponent, {data: [task, "Добавление задачи"]});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {//если нажали ок и есть результат
+        this.addTask.emit(task);
+      }
+    });
   }
 }

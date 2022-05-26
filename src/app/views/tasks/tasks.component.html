@@ -291,7 +291,7 @@
           </div>
         </div>
         <div class="card-body px-4 pb-2">
-          <div class="table-responsive">
+          <div class="table-responsive horizon">
             <!-- ===================ФИЛЬТРАЦИЯ===========================-->
             <div class="row px-6 ">
               <!-- ============ Поиск задач =============== -->
@@ -389,7 +389,9 @@
                   </div>
                   <br>
                   <div class="col-6 text-center">
-                    <button color="primary" mat-raised-button>Добавить задачу</button>
+                    <button color="primary" mat-raised-button
+                    (click)="openAddTaskDialog()"
+                    >Добавить задачу</button>
                   </div>
                 </div>
               </div>
@@ -502,7 +504,7 @@
                   <td mat-cell *matCellDef="let element"
                       class="align-middle text-center text-sm pointer"
                       [class.completed]="element.completed"
-                      (click)="openDialog(element)">
+                      (click)="openEditDialog(element)">
                     {{element.title}} </td>
                 </ng-container>
 
@@ -548,7 +550,7 @@
                       <mat-icon aria-hidden="false">delete</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="openDialog(task)" class="edit-icon">
+                    <button mat-icon-button (click)="openEditDialog(task)" class="edit-icon">
                       <mat-icon aria-hidden="false">edit</mat-icon>
                     </button>
 
