@@ -3,6 +3,7 @@ import {ApplicationService} from "../../service/application.service";
 import {Category} from "../../model/Category";
 import {MatDialog} from "@angular/material/dialog";
 import {EditCategoryDialogComponent} from "../../dialog/edit-category-dialog/edit-category-dialog.component";
+import {TypeOperation} from "../../dialog/type-operation";
 
 @Component({
   selector: 'app-categories',
@@ -27,6 +28,9 @@ export class CategoriesComponent implements OnInit {
 
   @Output()
   updateCategory = new EventEmitter<Category>();
+
+  @Output()
+  private addCategory = new EventEmitter<string>();
 
 
   constructor(private applicationService: ApplicationService,
@@ -65,7 +69,7 @@ export class CategoriesComponent implements OnInit {
   openEditDialog(category: Category) {
     console.log(category.title);
     let dialogRef = this.matDialog.open(EditCategoryDialogComponent,
-      {data: [category.title, "Редактирование категории",], autoFocus: false});
+      {data: [category.title, "Редактирование категории",TypeOperation.EDIT], autoFocus: false});
 
     dialogRef.afterClosed().subscribe(res => {
 
@@ -77,6 +81,20 @@ export class CategoriesComponent implements OnInit {
       if (res as string) { //если нажали ок и есть результат
         category.title = res as string;
         this.updateCategory.emit(category);//внешний обработчик
+        return;
+      }
+    });
+  }
+
+  openAddCategoryDialog() {
+    let dialogRef = this.matDialog.open(EditCategoryDialogComponent,
+      {data: ['', "Редактирование категории", TypeOperation.ADD],
+        width: "400px"});
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) { //если нажали ок и есть результат
+        // @ts-ignore
+        this.addCategory.emit(res as string);//внешний обработчик
         return;
       }
     });
