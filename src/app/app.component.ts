@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   searchTaskText = '';
   statusFilter!: boolean;
   priorityFilter!: Priority;
+  private searchCategoryText!: string;
 
 
   constructor(private service: ApplicationService) {
@@ -72,7 +73,8 @@ export class AppComponent implements OnInit {
 
   onUpdateCategory(category: Category) {
     this.service.updateCategory(category).subscribe(() => {
-      this.onSelectCategory(category);
+      //this.onSelectCategory(this.selectedCategory); //работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
+      this.onSearchCategory(this.searchCategoryText);
     });
   }
 
@@ -80,7 +82,8 @@ export class AppComponent implements OnInit {
   onDeleteCategory(category: Category) {
     this.service.deleteCategory(category.id).subscribe(() => {
       this.selectedCategory = null!; //Выбирается категория "Все категории"
-      this.onSelectCategory(this.selectedCategory);
+      //this.onSelectCategory(this.selectedCategory);//работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
+      this.onSearchCategory(this.searchCategoryText);
     })
   }
 
@@ -123,6 +126,13 @@ export class AppComponent implements OnInit {
   private updateCategories() {
     this.categories.forEach(cat => {
       this.service.getAllCategories().subscribe(cat => this.categories = cat);
+    });
+  }
+
+  onSearchCategory(title: string) {
+    this.searchCategoryText = title;
+    this.service.searchCategories(title).subscribe(cat => {
+      this.categories = cat
     });
   }
 }

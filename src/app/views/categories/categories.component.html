@@ -15,10 +15,60 @@
     </h2>
   </div>
   <!--  </a>-->
+
+  <!--Поиск по категории-->
+  <!--  <div class="search-category-area">-->
+  <!--    <mat-form-field class="example-fool-width">-->
+  <!--      <input-->
+  <!--        #inputSearchCategory-->
+  <!--        (keydown.escape)="searchCategoryTitle = ''; search()"-->
+  <!--        (keyup)="search()"-->
+  <!--        [(ngModel)]="searchCategoryTitle"-->
+  <!--        matInput-->
+  <!--        maxlength="256"-->
+  <!--        placeholder="Поиск категорий"/>-->
+  <!--      <button (click)="searchCategoryTitle = ''; search()"-->
+  <!--              *ngIf="inputSearchCategory.value.trim().length > 0"-->
+  <!--              aria-label="clear"-->
+  <!--              mat-icon-button-->
+  <!--              matSuffix-->
+  <!--              class="search-category-button">-->
+  <!--        <mat-icon>clear</mat-icon>-->
+  <!--      </button>-->
+
+  <!--    </mat-form-field>-->
+  <!--  </div>-->
+
 </div>
 <hr class="horizontal light mt-0 mb-2">
 <div class="collapse navbar-collapse  w-auto vertical-line" id="sidenav-collapse-main">
   <ul class="navbar-nav">
+
+    <!--Поиск по категории-->
+    <li class="nav-item pointer">
+      <mat-form-field class="white ps-3 pe-3">
+        <input
+          #inputSearchCategory
+          (keydown.escape)="searchCategoryTitle = ''; search()"
+          (keyup)="search()"
+          [(ngModel)]="searchCategoryTitle"
+          matInput
+          maxlength="256"
+          class="white"
+        />
+        <mat-placeholder class="white">Поиск категорий</mat-placeholder>
+        <button (click)="searchCategoryTitle = ''; search()"
+                *ngIf="inputSearchCategory.value.trim().length > 0"
+                aria-label="clear"
+                mat-icon-button
+                matSuffix
+                class="search-category-button white">
+          <mat-icon>clear</mat-icon>
+        </button>
+
+      </mat-form-field>
+    </li>
+
 
     <li class="nav-item pointer"
         (click)="showTasksByCategory(null!)"

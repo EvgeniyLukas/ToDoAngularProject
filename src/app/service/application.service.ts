@@ -92,4 +92,8 @@ export class ApplicationService {
     // @ts-ignore
     return this.categoryDAOImpl.add(new Category(null, categoryTitle));
   }
+
+  searchCategories(title: string): Observable<Category[]> {
+    return this.categoryDAOImpl.search(title);
+  }
 }

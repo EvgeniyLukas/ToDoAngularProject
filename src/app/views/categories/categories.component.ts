@@ -32,6 +32,12 @@ export class CategoriesComponent implements OnInit {
   @Output()
   private addCategory = new EventEmitter<string>();
 
+  @Output()
+  private searchCategory = new EventEmitter<string>();
+
+  //Переменная для поиска категорий
+  searchCategoryTitle!: string;
+
 
   constructor(private applicationService: ApplicationService,
               private matDialog: MatDialog) {
@@ -77,7 +83,6 @@ export class CategoriesComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(res => {
-
       if (res === 'delete') {
         this.deleteCategory.emit(category);//внешний обработчик
         return;
@@ -106,5 +111,13 @@ export class CategoriesComponent implements OnInit {
         return;
       }
     });
+  }
+
+  //метод для поиска категории
+  search() {
+    if(this.searchCategoryTitle == null){
+      return
+    }
+    this.searchCategory.emit(this.searchCategoryTitle);
   }
 }
