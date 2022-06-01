@@ -37,7 +37,7 @@ export class CategoryDAOImpl implements CategoryDAO {
   update(category: Category): Observable<Category> {
     const tmpCategory = TestData.tasks.find(t => t === category);//находим по id
     // @ts-ignore
-    TestData.tasks.splice(TestData.tasks.indexOf(tmpCategory), 1, category); //удаляем и заменяем на новый
+    TestData.tasks.splice(TestData.tasks.indexOf(tmpCategory.id), 1, category); //удаляем и заменяем на новый
     // @ts-ignore
     return of(tmpCategory);
   }

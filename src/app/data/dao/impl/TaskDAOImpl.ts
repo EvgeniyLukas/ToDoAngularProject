@@ -79,4 +79,22 @@ export class TaskDAOImpl implements TaskDAO {
     return of(task);
   }
 
+  getTotalCountCategory(category: Category) {
+    // @ts-ignore
+    return of(this.searchTasks(category, null, null, null).length);
+  }
+
+  getCompletedCountInCategory(category: Category) {
+    // @ts-ignore
+    return of(this.searchTasks(category, null, true, null).length);
+  }
+
+  getUnCompletedCountInCategory(category: Category) {
+    // @ts-ignore
+    return of(this.searchTasks(category, null, false, null).length);
+  }
+
+  getTotalCount() {
+    return of(TestData.tasks.length);
+  }
 }

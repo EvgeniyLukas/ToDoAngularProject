@@ -3,6 +3,7 @@ import {ApplicationService} from "./service/application.service";
 import {Task} from "./model/Task";
 import {Category} from "./model/Category";
 import {Priority} from "./model/Priority";
+import {zip} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,13 @@ export class AppComponent implements OnInit {
   private searchCategoryText!: string;
 
 
+  //статистика
+  totalTaskInCategory!: number;
+  completeTaskInCategory!: number;
+  unCompleteCountCategory!: number;
+  unCompleteTaskInCategory!: number;
+
+
   constructor(private service: ApplicationService) {
   }
 
@@ -37,38 +45,51 @@ export class AppComponent implements OnInit {
   onSelectCategory(category: Category) {
     this.selectedCategory = category;
 
-    //метод ниже заменили на updateTasks()
+    //метод ниже заменили на updateTasks() а потом на updateTaskAndStatistic()
     // // @ts-ignore
     // this.service.searchTasks(this.selectedCategory, null, null,
     //   null).subscribe(tasks => {
     //   this.tasks = tasks
     // });
-
-    this.updateTasks()
+    this.updateTaskAndStatistic();
 
   }
 
   onUpdateTask(task: Task) {
+    //до статистики
+    // this.service.onUpdateTask(task).subscribe(() => {
+    //   // @ts-ignore
+    //   this.service.searchTasks(this.selectedCategory, null,
+    //     null,
+    //     null).subscribe(tasks => {
+    //     this.tasks = tasks
+    //   })
+    // });
+
+    //добавили статистику
     this.service.onUpdateTask(task).subscribe(() => {
-      // @ts-ignore
-      this.service.searchTasks(this.selectedCategory, null,
-        null,
-        null).subscribe(tasks => {
-        this.tasks = tasks
-      })
+      this.updateTaskAndStatistic();
     });
-    //console.log(task);
+
   }
 
+  //удаление задачи
   onDeleteTask(task: Task) {
+    //до статистики
+    // this.service.onDeleteTask(task.id).subscribe(() => {
+    //   // @ts-ignore
+    //   this.service.searchTasks(this.selectedCategory, null,
+    //     null,
+    //     null).subscribe(tasks => {
+    //     this.tasks = tasks
+    //   })
+    // });
+
+    //со статистикой
     this.service.onDeleteTask(task.id).subscribe(() => {
-      // @ts-ignore
-      this.service.searchTasks(this.selectedCategory, null,
-        null,
-        null).subscribe(tasks => {
-        this.tasks = tasks
-      })
+      this.updateTaskAndStatistic();
     });
+
   }
 
   onUpdateCategory(category: Category) {
@@ -115,7 +136,7 @@ export class AppComponent implements OnInit {
 
   onAddTask(task: Task) {
     this.service.addTask(task).subscribe(result => {
-      this.updateTasks();
+      this.updateTaskAndStatistic();
     })
   }
 
@@ -134,5 +155,31 @@ export class AppComponent implements OnInit {
     this.service.searchCategories(title).subscribe(cat => {
       this.categories = cat
     });
+  }
+
+  updateTaskAndStatistic() {
+    this.updateTasks();//обновить список задач
+
+    //Обновить переменные для статистики
+    this.updateStatistic();
+  }
+
+  private updateStatistic() {
+    zip(
+      this.service.getTotalCountCategory(this.selectedCategory),
+      this.service.getCompletedCountInCategory(this.selectedCategory),
+      this.service.getUnCompletedCountInCategory(this.selectedCategory),
+      this.service.getTotalCount()).subscribe(
+      array => {
+        // @ts-ignore
+        this.totalTaskInCategory = array[0];
+        // @ts-ignore
+        this.completeTaskInCategory = array[1];
+        // @ts-ignore
+        this.unCompleteCountCategory = array[2];
+        // @ts-ignore
+        this.unCompleteTaskInCategory = array[3];
+      }
+    );
   }
 }

@@ -96,4 +96,21 @@ export class ApplicationService {
   searchCategories(title: string): Observable<Category[]> {
     return this.categoryDAOImpl.search(title);
   }
+
+  getTotalCountCategory(category: Category): Observable<number> {
+    return this.taskDaoImpl.getTotalCountCategory(category);
+  }
+
+  getCompletedCountInCategory(category: Category): Observable<number> {
+    return this.taskDaoImpl.getCompletedCountInCategory(category);
+  }
+
+  getUnCompletedCountInCategory(category: Category): Observable<number> {
+    return this.taskDaoImpl.getUnCompletedCountInCategory(category);
+  }
+
+  getTotalCount(): Observable<number> {
+    // @ts-ignore
+    return this.taskDaoImpl.getTotalCount(null);
+  }
 }

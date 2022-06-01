@@ -82,6 +82,7 @@ export class TasksComponent implements OnInit {
   @Input()
   selectedCategory!: Category;
 
+
   constructor(
     private applicationService: ApplicationService,
     private matDialog: MatDialog) {
@@ -104,11 +105,8 @@ export class TasksComponent implements OnInit {
 
     //вариант2 - оба рабочие
     this.dataSource = new MatTableDataSource();
-    this.refreshTable();
-
-
-    // this.deleteTitle = this.data[1];
-    // this.deleteTask = this.data[0];
+    //this.refreshTable(); //метод работает но не корректно
+    this.onSelectCategory(null!);
 
 
   }
@@ -155,6 +153,8 @@ export class TasksComponent implements OnInit {
 
 
   //метод для редактирования задач
+
+
   openEditDialog(task: Task) {
 
     //this.updateTask.emit(task);
