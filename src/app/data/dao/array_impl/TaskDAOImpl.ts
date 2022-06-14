@@ -5,7 +5,7 @@ import {Category} from "../../../model/Category";
 import {Priority} from "../../../model/Priority";
 import {TestData} from "../../TestData";
 
-export class TaskDAOImpl implements TaskDAO {
+export class TaskDAOImpl  {
 
   add(task: Task): Observable<Task> {
 

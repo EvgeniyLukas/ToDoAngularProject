@@ -4,6 +4,7 @@ import {Category} from "../../model/Category";
 import {MatDialog} from "@angular/material/dialog";
 import {EditCategoryDialogComponent} from "../../dialog/edit-category-dialog/edit-category-dialog.component";
 import {TypeOperation} from "../../dialog/type-operation";
+import {CategorySearchCriteria} from "../../data/dao/search/SearcCriteria";
 
 @Component({
   selector: 'app-categories',
@@ -12,14 +13,20 @@ import {TypeOperation} from "../../dialog/type-operation";
 })
 export class CategoriesComponent implements OnInit {
 
-  @Input()
-  categories!: Category[];
+  // @ts-ignore
+  categories: Category[];
+
+  // @ts-ignore
+  categorySearchCriteria: CategorySearchCriteria = {title: null}
+
+
+  @Input("categories")
+  set setCategories(value: Category[]) {
+    this.categories = value;
+  }
 
   @Input()
   selectedCategory!: Category;
-
-  @Output()
-  selectCategory = new EventEmitter<Category>();
 
   indexMouseMove!: number;
 
@@ -35,6 +42,22 @@ export class CategoriesComponent implements OnInit {
   @Output()
   private searchCategory = new EventEmitter<string>();
 
+  // ========== для работы с БД =========
+  @Output()
+  private searchCategoryNew = new EventEmitter<CategorySearchCriteria>();
+
+  @Output()
+  updateCategoryNew = new EventEmitter<Category>();
+  @Output()
+  deleteCategoryNew = new EventEmitter<Category>();
+
+  @Output()
+  addCategoryNew = new EventEmitter<string>();
+
+  @Output()
+  selectCategoryNew = new EventEmitter<Category>();
+
+
   //Переменная для поиска категорий
   searchCategoryTitle!: string;
 
@@ -43,29 +66,32 @@ export class CategoriesComponent implements OnInit {
               private matDialog: MatDialog) {
   }
 
+
   ngOnInit(): void {
     /*this.categories = this.applicationService.getCategories();
     console.log(this.categories);*/
     //this.applicationService.categorySubject.subscribe(categories =>this.categories = categories);
 
     //DAO
-    //this.applicationService.getAllCategories().subscribe(cat => this.categories = cat);
+    this.applicationService.getAllCategories().subscribe(cat => this.categories = cat);
 
   }
 
+
   showTasksByCategory(category: Category) {
     /*this.applicationService.getTaskByCategory(category);*/
-    // if (this.selectedCategory === category) {
-    //   return;
-    // }
+
 
     //this.applicationService.fillTaskByCategory(category);
 
-    console.log(category)
+    console.log("showTaskByCategory = ", category)
 
+    if (this.selectedCategory && this.selectedCategory === category) {
+      return;
+    }
     this.selectedCategory = category;
 
-    this.selectCategory.emit(this.selectedCategory);
+    this.selectCategoryNew.emit(this.selectedCategory);
   }
 
   showEditIcon(index: number) {
@@ -84,13 +110,13 @@ export class CategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res === 'delete') {
-        this.deleteCategory.emit(category);//внешний обработчик
+        this.deleteCategoryNew.emit(category);//внешний обработчик
         return;
       }
 
       if (res as string) { //если нажали ок и есть результат
         category.title = res as string;
-        this.updateCategory.emit(category);//внешний обработчик
+        this.updateCategoryNew.emit(category);//внешний обработчик
         return;
       }
     });
@@ -106,8 +132,10 @@ export class CategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res) { //если нажали ок и есть результат
+        console.log(res)
+        console.log(typeof res)
         // @ts-ignore
-        this.addCategory.emit(res as string);//внешний обработчик
+        this.addCategoryNew.emit(res);//внешний обработчик
         return;
       }
     });
@@ -115,9 +143,12 @@ export class CategoriesComponent implements OnInit {
 
   //метод для поиска категории
   search() {
-    if(this.searchCategoryTitle == null){
+    console.log(this.searchCategoryTitle);
+    if (this.searchCategoryTitle == null) {
       return
     }
-    this.searchCategory.emit(this.searchCategoryTitle);
+    this.categorySearchCriteria.title = this.searchCategoryTitle;
+
+    this.searchCategoryNew.emit(this.categorySearchCriteria);
   }
 }

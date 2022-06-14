@@ -11,11 +11,11 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {EditTaskDialogComponent} from './dialog/edit-task-dialog/edit-task-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule} from "@angular/forms";
-import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
-import {MatSelect, MatSelectModule} from "@angular/material/select";
+import {MatSelectModule} from "@angular/material/select";
 import {ConfirmDialogComponent} from './dialog/confirm-dialog/confirm-dialog.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {TaskDatePipe} from './pipe/task-date.pipe';
@@ -23,11 +23,16 @@ import {TaskDatePipe} from './pipe/task-date.pipe';
 import {registerLocaleData} from "@angular/common";
 import localeRu from "@angular/common/locales/ru";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { EditCategoryDialogComponent } from './dialog/edit-category-dialog/edit-category-dialog.component';
-import { FooterComponent } from './views/footer/footer.component';
-import { HeaderComponent } from './views/header/header.component';
-import { StatComponent } from './views/stat/stat.component';
-import { StatCardComponent } from './views/stat/stat-card/stat-card.component';
+import {EditCategoryDialogComponent} from './dialog/edit-category-dialog/edit-category-dialog.component';
+import {FooterComponent} from './views/footer/footer.component';
+import {HeaderComponent} from './views/header/header.component';
+import {StatComponent} from './views/stat/stat.component';
+import {StatCardComponent} from './views/stat/stat-card/stat-card.component';
+import {HttpClientModule} from "@angular/common/http";
+import {CATEGORY_URL_TOKEN} from "./data/dao/json_impl/CategoryDaoImpl.service";
+import {PRIORITY_URL_TOKEN} from "./data/dao/json_impl/PriorityDaoImpl.service";
+import {TASK_URL_TOKEN} from "./data/dao/json_impl/TaskDaoImpl.service";
+import {STATUS_URL_TOKEN} from "./data/dao/json_impl/StatusDaoImpl.service";
 
 registerLocaleData(localeRu);
 
@@ -63,9 +68,27 @@ registerLocaleData(localeRu);
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: TASK_URL_TOKEN,
+      useValue: "http://localhost:8080/task"
+    },
+    {
+      provide: CATEGORY_URL_TOKEN,
+      useValue: "http://localhost:8080/category"
+    },
+    {
+      provide: PRIORITY_URL_TOKEN,
+      useValue: "http://localhost:8080/priority"
+    },
+    {
+      provide: STATUS_URL_TOKEN,
+      useValue: "http://localhost:8080/status"
+    }
+  ],
   entryComponents: [
     EditTaskDialogComponent,
     ConfirmDialogComponent,

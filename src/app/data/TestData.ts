@@ -5,14 +5,14 @@ import {Task} from "../model/Task";
 export class TestData {
 
   static categories: Category[] = [
-    {id: 1, title: 'Еда'},
-    {id: 2, title: 'Спорт'},
-    {id: 3, title: 'Кино'},
-    {id: 4, title: 'Жизнь'},
-    {id: 5, title: 'Квартира'},
-    {id: 6, title: 'Работа'},
-    {id: 7, title: 'Отдых'},
-    {id: 8, title: 'Животные'},
+    {id: 1, title: 'Еда', completedCount: 0, unCompletedCount: 0},
+    {id: 2, title: 'Спорт', completedCount: 0, unCompletedCount: 0},
+    {id: 3, title: 'Кино', completedCount: 0, unCompletedCount: 0},
+    {id: 4, title: 'Жизнь', completedCount: 0, unCompletedCount: 0},
+    {id: 5, title: 'Квартира', completedCount: 0, unCompletedCount: 0},
+    {id: 6, title: 'Работа', completedCount: 0, unCompletedCount: 0},
+    {id: 7, title: 'Отдых', completedCount: 0, unCompletedCount: 0},
+    {id: 8, title: 'Животные', completedCount: 0, unCompletedCount: 0},
   ];
 
   static priorities: Priority[] = [

@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ApplicationService} from "./service/application.service";
+import {Component, OnInit} from '@angular/core';
 import {Task} from "./model/Task";
 import {Category} from "./model/Category";
 import {Priority} from "./model/Priority";
-import {zip} from "rxjs";
+import {CategoryDaoImplService} from "./data/dao/json_impl/CategoryDaoImpl.service";
+import {CategorySearchCriteria, TaskSearchCriteria} from "./data/dao/search/SearcCriteria";
+import {TaskDaoImplService} from "./data/dao/json_impl/TaskDaoImpl.service";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,12 @@ export class AppComponent implements OnInit {
   tasks!: Task[];
   categories!: Category[];
   priorities!: Priority[];
+  // @ts-ignore
+  //categorySearchCriteria: CategorySearchCriteria = {title: null};
+  categorySearchCriteria = new CategorySearchCriteria();
+  // @ts-ignore
+  //taskSearchCriteria: TaskSearchCriteria = {title: null, categoryId: null};
+  taskSearchCriteria = new TaskSearchCriteria();
 
 
   selectedCategory!: Category;
@@ -30,17 +37,24 @@ export class AppComponent implements OnInit {
   unCompleteTaskInCategory!: number;
 
 
-  constructor(private service: ApplicationService) {
+  // constructor(private service: ApplicationService) {
+  // }
+
+
+  constructor(private categoryService: CategoryDaoImplService,
+              private taskService: TaskDaoImplService) {
   }
 
   ngOnInit(): void {
-    this.service.getAllTasks().subscribe(tasks => this.tasks = tasks);
+    /*this.service.getAllTasks().subscribe(tasks => this.tasks = tasks);
     this.service.getAllCategories().subscribe(cat => this.categories = cat);
     // @ts-ignore
     this.onSelectCategory(null);
     //Получаем все приоритеты
-    this.service.getAllPriorities().subscribe(p => this.priorities = p);
+    this.service.getAllPriorities().subscribe(p => this.priorities = p);*/
+    this.fillAllCategories();
   }
+
 
   onSelectCategory(category: Category) {
     this.selectedCategory = category;
@@ -51,8 +65,7 @@ export class AppComponent implements OnInit {
     //   null).subscribe(tasks => {
     //   this.tasks = tasks
     // });
-    this.updateTaskAndStatistic();
-
+    /*this.updateTaskAndStatistic();*/
   }
 
   onUpdateTask(task: Task) {
@@ -66,10 +79,10 @@ export class AppComponent implements OnInit {
     //   })
     // });
 
-    //добавили статистику
-    this.service.onUpdateTask(task).subscribe(() => {
-      this.updateTaskAndStatistic();
-    });
+    /*    //добавили статистику
+        this.service.onUpdateTask(task).subscribe(() => {
+          this.updateTaskAndStatistic();
+        });*/
 
   }
 
@@ -85,28 +98,13 @@ export class AppComponent implements OnInit {
     //   })
     // });
 
-    //со статистикой
-    this.service.onDeleteTask(task.id).subscribe(() => {
-      this.updateTaskAndStatistic();
-    });
+    /*    //со статистикой
+        this.service.onDeleteTask(task.id).subscribe(() => {
+          this.updateTaskAndStatistic();
+        });*/
 
   }
 
-  onUpdateCategory(category: Category) {
-    this.service.updateCategory(category).subscribe(() => {
-      //this.onSelectCategory(this.selectedCategory); //работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
-      this.onSearchCategory(this.searchCategoryText);
-    });
-  }
-
-
-  onDeleteCategory(category: Category) {
-    this.service.deleteCategory(category.id).subscribe(() => {
-      this.selectedCategory = null!; //Выбирается категория "Все категории"
-      //this.onSelectCategory(this.selectedCategory);//работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
-      this.onSearchCategory(this.searchCategoryText);
-    })
-  }
 
   onSearchTask(searchString: string) {
     this.searchTaskText = searchString;
@@ -115,12 +113,12 @@ export class AppComponent implements OnInit {
   }
 
   private updateTasks() {
-    this.service.searchTasks(
-      // @ts-ignore
-      this.selectedCategory, this.searchTaskText, this.statusFilter, this.priorityFilter)
-      .subscribe(tasks => {
-        this.tasks = tasks;
-      });
+    /*    this.service.searchTasks(
+          // @ts-ignore
+          this.selectedCategory, this.searchTaskText, this.statusFilter, this.priorityFilter)
+          .subscribe(tasks => {
+            this.tasks = tasks;
+          });*/
   }
 
   onFilterByStatus(status: boolean) {
@@ -134,28 +132,45 @@ export class AppComponent implements OnInit {
 
   }
 
+
   onAddTask(task: Task) {
-    this.service.addTask(task).subscribe(result => {
-      this.updateTaskAndStatistic();
-    })
+    /*    this.service.addTask(task).subscribe(result => {
+          this.updateTaskAndStatistic();
+        });*/
   }
 
   onAddCategories(categoryTitle: string) {
-    this.service.addCategory(categoryTitle).subscribe(() => this.updateCategories());
-  }
-
-  private updateCategories() {
-    this.categories.forEach(cat => {
-      this.service.getAllCategories().subscribe(cat => this.categories = cat);
-    });
+    /* this.service.addCategory(categoryTitle).subscribe(() => this.updateCategories());*/
   }
 
   onSearchCategory(title: string) {
-    this.searchCategoryText = title;
-    this.service.searchCategories(title).subscribe(cat => {
-      this.categories = cat
-    });
+    /*    this.searchCategoryText = title;
+        this.service.searchCategories(title).subscribe(cat => {
+          this.categories = cat
+        });*/
   }
+
+  onDeleteCategory(category: Category) {
+    /*    this.service.deleteCategory(category.id).subscribe(() => {
+          this.selectedCategory = null!; //Выбирается категория "Все категории"
+          //this.onSelectCategory(this.selectedCategory);//работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
+          this.onSearchCategory(this.searchCategoryText);
+        })*/
+  }
+
+  onUpdateCategory(category: Category) {
+    /*    this.service.updateCategory(category).subscribe(() => {
+          //this.onSelectCategory(this.selectedCategory); //работает но с багом(СОЗДАЕТ ЗАДАЧУ С НАЗВАНИЕМ КАТЕГОРИИ)
+          this.onSearchCategory(this.searchCategoryText);
+        });*/
+  }
+
+  private updateCategories() {
+    /*    this.categories.forEach(cat => {
+          this.service.getAllCategories().subscribe(cat => this.categories = cat);
+        });*/
+  }
+
 
   updateTaskAndStatistic() {
     this.updateTasks();//обновить список задач
@@ -165,21 +180,80 @@ export class AppComponent implements OnInit {
   }
 
   private updateStatistic() {
-    zip(
-      this.service.getTotalCountCategory(this.selectedCategory),
-      this.service.getCompletedCountInCategory(this.selectedCategory),
-      this.service.getUnCompletedCountInCategory(this.selectedCategory),
-      this.service.getTotalCount()).subscribe(
-      array => {
+    /*    zip(
+          this.service.getTotalCountCategory(this.selectedCategory),
+          this.service.getCompletedCountInCategory(this.selectedCategory),
+          this.service.getUnCompletedCountInCategory(this.selectedCategory),
+          this.service.getTotalCount()).subscribe(
+          array => {
+            // @ts-ignore
+            this.totalTaskInCategory = array[0];
+            // @ts-ignore
+            this.completeTaskInCategory = array[1];
+            // @ts-ignore
+            this.unCompleteCountCategory = array[2];
+            // @ts-ignore
+            this.unCompleteTaskInCategory = array[3];
+          }
+        );*/
+  }
+
+//========= методы для работы с Category через БД ==========
+  addCategory(title: string) {
+    let category: Category = new Category(null!, title);
+    this.categoryService.add(category).subscribe(() => {
+      this.searchCategory(this.categorySearchCriteria);
+    });
+  }
+
+  deleteCategory(category: Category) {
+    console.log("id app", category.id);
+    this.categoryService.delete(category.id).subscribe(() => {
+      this.searchCategory(this.categorySearchCriteria);
+    });
+  }
+
+  updateCategory(category: Category) {
+    this.categoryService.update(category).subscribe(() => {
+      this.searchCategory(this.categorySearchCriteria);
+    });
+  }
+
+  searchCategory(categorySearchCriteria: CategorySearchCriteria) {
+    this.categoryService.searchCategories(categorySearchCriteria)
+      .subscribe(result => {
+        this.categories = result;
+      });
+  }
+
+  fillAllCategories() {
+    this.categoryService.getAll().subscribe(result => {
+      this.categories = result;
+      console.log(result);
+    });
+  }
+
+  selectCategory(category: Category) {
+    this.selectedCategory = category;
+
+    // @ts-ignore
+    this.taskSearchCriteria.categoryId = category ? category.id : null;
+
+    this.searchTasks(this.taskSearchCriteria);
+  }
+
+  private searchTasks(taskSearchCriteria: TaskSearchCriteria) {
+
+    this.taskSearchCriteria = taskSearchCriteria;
+
+
+    this.taskService.searchAllTasks(this.taskSearchCriteria)
+      .subscribe(result => {
         // @ts-ignore
-        this.totalTaskInCategory = array[0];
-        // @ts-ignore
-        this.completeTaskInCategory = array[1];
-        // @ts-ignore
-        this.unCompleteCountCategory = array[2];
-        // @ts-ignore
-        this.unCompleteTaskInCategory = array[3];
-      }
-    );
+        this.tasks = result.content;
+        console.log("tasks = ", result);
+
+      });
+
   }
 }

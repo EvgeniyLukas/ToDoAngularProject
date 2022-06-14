@@ -3,7 +3,7 @@ import {Priority} from "../../../model/Priority";
 import {Observable, of} from "rxjs";
 import {TestData} from "../../TestData";
 
-export class PriorityDAOImpl implements PriorityDAO {
+export class PriorityDAOImpl  {
   add(t: Priority): Observable<Priority> {
     // @ts-ignore
     return undefined;

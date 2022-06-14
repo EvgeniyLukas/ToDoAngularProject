@@ -2,12 +2,18 @@
 <aside
   class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
   id="sidenav-main">
+  <!--(selectCategory)="onSelectCategory($event)"-->
   <app-categories
-    (selectCategory)="onSelectCategory($event)"
+    (addCategory)="onAddCategories($event)"
     (updateCategory)="onUpdateCategory($event)"
     (deleteCategory)="onDeleteCategory($event)"
-    (addCategory)="onAddCategories($event)"
     (searchCategory)="onSearchCategory($event)"
+
+    (selectCategoryNew)="selectCategory($event)"
+    (searchCategoryNew)="searchCategory($event)"
+    (addCategoryNew)="addCategory($event)"
+    (updateCategoryNew)="updateCategory($event)"
+    (deleteCategoryNew)="deleteCategory($event)"
 
     [selectedCategory]="selectedCategory"
     [categories]="categories"
@@ -159,6 +165,7 @@
       <app-tasks [tasks]="tasks"
                  [priorities]='priorities'
                  [selectedCategory]="selectedCategory"
+
                  (addTask)="onAddTask($event)"
                  (updateTask)="onUpdateTask($event)"
                  (deleteTask)="onDeleteTask($event)"

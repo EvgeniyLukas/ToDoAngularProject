@@ -3,10 +3,10 @@ import {Category} from "../model/Category";
 import {TestData} from "../data/TestData";
 import {Task} from "../model/Task";
 import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {TaskDAOImpl} from "../data/dao/impl/TaskDAOImpl";
-import {CategoryDAOImpl} from "../data/dao/impl/CategoryDAOImpl";
+import {TaskDAOImpl} from "../data/dao/array_impl/TaskDAOImpl";
+import {CategoryDAOImpl} from "../data/dao/array_impl/CategoryDAOImpl";
 import {Priority} from "../model/Priority";
-import {PriorityDAOImpl} from "../data/dao/impl/PriorityDAOImpl";
+import {PriorityDAOImpl} from "../data/dao/array_impl/PriorityDAOImpl";
 
 @Injectable({
   providedIn: 'root'
@@ -43,12 +43,12 @@ export class ApplicationService {
     return TestData.tasks;
   }
 
-  getTaskByCategory(category: Category): Category[] {
+/*  getTaskByCategory(category: Category): Category[] {
     const tasks = TestData.tasks.filter(task => task.category === category);
     console.log(tasks);
     return tasks;
 
-  }
+  }*/
 
   //DAO
   getAllTasks(): Observable<Task[]> {

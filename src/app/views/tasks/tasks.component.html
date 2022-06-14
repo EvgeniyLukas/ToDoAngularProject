@@ -223,7 +223,7 @@
 
             </div>
 
-            <div *ngIf="tasks.length > 0">
+            <div *ngIf="tasks && tasks.length > 0">
               <!--(matSortChange)="announceSortChange($event)"-->
               <table mat-table matSort (matSortChange)="announceSortChange($event)" [dataSource]="dataSource"
                      class="mat-elevation-z8 table align-items-center mb-0">
@@ -344,7 +344,7 @@
               </mat-paginator>
             </div>
 
-            <div *ngIf="tasks.length <= 0" style="text-align: center">
+            <div *ngIf="tasks && tasks.length <= 0" style="text-align: center">
               <p>Нет данных</p>
             </div>
 

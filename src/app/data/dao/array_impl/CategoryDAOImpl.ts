@@ -3,7 +3,7 @@ import {Category} from "../../../model/Category";
 import {Observable, of} from "rxjs";
 import {TestData} from "../../TestData";
 
-export class CategoryDAOImpl implements CategoryDAO {
+export class CategoryDAOImpl  {
 
   add(category: Category): Observable<Category> {
     if (category.id === null || category.id === 0) {
@@ -35,6 +35,7 @@ export class CategoryDAOImpl implements CategoryDAO {
   }
 
   update(category: Category): Observable<Category> {
+    // @ts-ignore
     const tmpCategory = TestData.tasks.find(t => t === category);//находим по id
     // @ts-ignore
     TestData.tasks.splice(TestData.tasks.indexOf(tmpCategory.id), 1, category); //удаляем и заменяем на новый
