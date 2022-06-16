@@ -17,7 +17,7 @@ import {TypeOperation} from "../type-operation";
 export class EditTaskDialogComponent implements OnInit {
   constructor(private matDialogRef: MatDialogRef<EditTaskDialogComponent>, //для работы с диалоговым окном
               @Inject(MAT_DIALOG_DATA) public data: [Task, string, TypeOperation],//данные которые передали в диалоговое окно
-              private service: ApplicationService,//ссылка на наш сервис
+              /*private service: ApplicationService,//ссылка на наш сервис*/
               private matDialog: MatDialog) {//для открытия нового диалогового окна из текущего
   }
 
@@ -45,9 +45,9 @@ export class EditTaskDialogComponent implements OnInit {
     // @ts-ignore
     this.tmpDate = this.dialogTask.date;
 
-    this.service.getAllCategories().subscribe(categories => this.categories = categories);
+    //this.service.getAllCategories().subscribe(categories => this.categories = categories);
 
-    this.service.getAllPriorities().subscribe(priority => this.priorities = priority);
+    //this.service.getAllPriorities().subscribe(priority => this.priorities = priority);
     // console.log(this.dialogTitle);
     // console.log(this.dialogTask);
   }

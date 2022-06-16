@@ -5,6 +5,8 @@ import {Priority} from "./model/Priority";
 import {CategoryDaoImplService} from "./data/dao/json_impl/CategoryDaoImpl.service";
 import {CategorySearchCriteria, TaskSearchCriteria} from "./data/dao/search/SearcCriteria";
 import {TaskDaoImplService} from "./data/dao/json_impl/TaskDaoImpl.service";
+import {PageEvent} from "@angular/material/paginator";
+import {PriorityDaoImplService} from "./data/dao/json_impl/PriorityDaoImpl.service";
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit {
   // @ts-ignore
   //taskSearchCriteria: TaskSearchCriteria = {title: null, categoryId: null};
   taskSearchCriteria = new TaskSearchCriteria();
+  totalTaskFounded!: number;
 
 
   selectedCategory!: Category;
@@ -42,7 +45,8 @@ export class AppComponent implements OnInit {
 
 
   constructor(private categoryService: CategoryDaoImplService,
-              private taskService: TaskDaoImplService) {
+              private taskService: TaskDaoImplService,
+              private priorityService: PriorityDaoImplService) {
   }
 
   ngOnInit(): void {
@@ -53,6 +57,8 @@ export class AppComponent implements OnInit {
     //Получаем все приоритеты
     this.service.getAllPriorities().subscribe(p => this.priorities = p);*/
     this.fillAllCategories();
+
+    this.fillAllPriorities();
   }
 
 
@@ -199,6 +205,7 @@ export class AppComponent implements OnInit {
   }
 
 //========= методы для работы с Category через БД ==========
+
   addCategory(title: string) {
     let category: Category = new Category(null!, title);
     this.categoryService.add(category).subscribe(() => {
@@ -242,18 +249,44 @@ export class AppComponent implements OnInit {
     this.searchTasks(this.taskSearchCriteria);
   }
 
-  private searchTasks(taskSearchCriteria: TaskSearchCriteria) {
+  searchTasks(taskSearchCriteria: TaskSearchCriteria) {
 
     this.taskSearchCriteria = taskSearchCriteria;
 
+    this.taskService.searchAllTasks(this.taskSearchCriteria).subscribe(result => {
 
-    this.taskService.searchAllTasks(this.taskSearchCriteria)
-      .subscribe(result => {
-        // @ts-ignore
-        this.tasks = result.content;
-        console.log("tasks = ", result);
+      // @ts-ignore
+      if (result.totalPages > 0 && this.taskSearchCriteria.pageNumber >= result.totalPages) {
+        this.taskSearchCriteria.pageNumber = 0;
+        this.searchTasks(this.taskSearchCriteria);
+      }
 
-      });
+      // @ts-ignore
+      this.totalTaskFounded = result.totalElements;
+      // @ts-ignore
+      this.tasks = result.content;
+
+    });
 
   }
+
+  paging(pageEvent: PageEvent) {
+    //
+    if (this.taskSearchCriteria.pageSize !== pageEvent.pageSize) {
+      this.taskSearchCriteria.pageNumber = 0;
+    } else {
+      this.taskSearchCriteria.pageNumber = pageEvent.pageIndex;
+    }
+
+    this.taskSearchCriteria.pageSize = pageEvent.pageSize;
+    this.taskSearchCriteria.pageNumber = pageEvent.pageIndex;
+    this.searchTasks(this.taskSearchCriteria);
+  }
+
+  private fillAllPriorities() {
+    this.priorityService.getAll().subscribe(res => {
+      this.priorities = res;
+    });
+  }
+
 }

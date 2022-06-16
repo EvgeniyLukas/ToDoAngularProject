@@ -3,13 +3,14 @@ import {ApplicationService} from "../../service/application.service";
 import {Task} from "../../model/Task";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, Sort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 import {Category} from "../../model/Category";
 import {Priority} from "../../model/Priority";
 import {TypeOperation} from "../../dialog/type-operation";
+import {TaskSearchCriteria} from "../../data/dao/search/SearcCriteria";
 
 @Component({
   selector: 'app-tasks',
@@ -37,6 +38,9 @@ export class TasksComponent implements OnInit {
 
   selectedPriorityFilter!: Priority;
 
+  @Input()
+  taskSearchCriteria!: TaskSearchCriteria;
+
 
   // переменная для фильтрации тайтлов
   @Output()
@@ -51,6 +55,10 @@ export class TasksComponent implements OnInit {
 
   @Output()
   private addTask = new EventEmitter<Task>();
+
+  @Output()
+  private searchData = new EventEmitter<TaskSearchCriteria>();
+
 
   selectedStatusFilter!: Boolean;
 
@@ -82,6 +90,12 @@ export class TasksComponent implements OnInit {
   @Input()
   selectedCategory!: Category;
 
+//===== настройки постраничности ====
+  @Output()
+  paging = new EventEmitter<PageEvent>()
+  //все найденные задачи
+  @Input()
+  totalTaskFounded!: number;
 
   constructor(
     private applicationService: ApplicationService,
@@ -112,7 +126,10 @@ export class TasksComponent implements OnInit {
   }
 
   toggleTaskCompleted(task: Task) {
-    task.completed = !task.completed;
+    if (task.completed == 0) {
+      task.completed = 1;
+    }
+    task.completed = 0;
     this.updateTask.emit(task);
   }
 
@@ -166,13 +183,13 @@ export class TasksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(res => {
 
       if (res === 'activate') {
-        task.completed = false;
+        task.completed = 0;
         this.updateTask.emit(task);
         return;
       }
 
       if (res === 'deActivate') {
-        task.completed = true;
+        task.completed = 1;
         this.updateTask.emit(task);
       }
 
@@ -231,6 +248,18 @@ export class TasksComponent implements OnInit {
     }
   }
 
+
+  filterByTaskCriteria() {
+    // @ts-ignore
+    this.taskSearchCriteria.title = this.searchTaskText;
+    // @ts-ignore
+    this.taskSearchCriteria.priorityId = this.selectedPriorityFilter;
+    // @ts-ignore
+    this.taskSearchCriteria.completed = this.selectedStatusFilter;
+
+    this.searchData.emit(this.taskSearchCriteria);
+  }
+
   openAddTaskDialog() {
     //делаем все то же самое что и при редактровании, но только передаем пустой объект Task
     // @ts-ignore
@@ -244,5 +273,9 @@ export class TasksComponent implements OnInit {
         this.addTask.emit(task);
       }
     });
+  }
+
+  pageChange(pageEvent: PageEvent) {
+    this.paging.emit(pageEvent);
   }
 }

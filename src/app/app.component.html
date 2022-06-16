@@ -165,6 +165,13 @@
       <app-tasks [tasks]="tasks"
                  [priorities]='priorities'
                  [selectedCategory]="selectedCategory"
+                 [taskSearchCriteria]="taskSearchCriteria"
+                 [totalTaskFounded]="totalTaskFounded"
+
+
+                 (paging)="paging($event)"
+                 (searchData)="searchTasks($event)"
+
 
                  (addTask)="onAddTask($event)"
                  (updateTask)="onUpdateTask($event)"

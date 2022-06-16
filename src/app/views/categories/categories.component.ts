@@ -73,8 +73,9 @@ export class CategoriesComponent implements OnInit {
     //this.applicationService.categorySubject.subscribe(categories =>this.categories = categories);
 
     //DAO
-    this.applicationService.getAllCategories().subscribe(cat => this.categories = cat);
+    //this.applicationService.getAllCategories().subscribe(cat => this.categories = cat);
 
+    this.showTasksByCategory(null!);
   }
 
 
