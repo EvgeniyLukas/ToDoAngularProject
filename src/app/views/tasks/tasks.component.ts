@@ -126,10 +126,11 @@ export class TasksComponent implements OnInit {
   }
 
   toggleTaskCompleted(task: Task) {
-    if (task.completed == 0) {
+    if (task.completed === 0) {
       task.completed = 1;
+    } else {
+      task.completed = 0;
     }
-    task.completed = 0;
     this.updateTask.emit(task);
   }
 
@@ -183,14 +184,19 @@ export class TasksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(res => {
 
       if (res === 'activate') {
-        task.completed = 0;
+        if (task.completed != null) {
+          task.completed = 0;
+        }
         this.updateTask.emit(task);
         return;
       }
 
       if (res === 'deActivate') {
-        task.completed = 1;
+        if (task.completed != null) {
+          task.completed = 1;
+        }
         this.updateTask.emit(task);
+        return;
       }
 
       if (res === 'delete') {
@@ -198,8 +204,8 @@ export class TasksComponent implements OnInit {
         return;
       }
 
-      if (res as Task) { //если нажали ок и есть результат
-        this.updateTask.emit(task);
+      if (res) { //если нажали ок и есть результат
+        this.updateTask.emit(res);
         return;
       }
     });
@@ -263,14 +269,15 @@ export class TasksComponent implements OnInit {
   openAddTaskDialog() {
     //делаем все то же самое что и при редактровании, но только передаем пустой объект Task
     // @ts-ignore
-    let task = new Task(null, '', false, null, this.selectedCategory);
+    let task = new Task(null, '', 0, null, this.selectedCategory);
 
     let dialogRef = this.matDialog.open(EditTaskDialogComponent,
       {data: [task, "Добавление задачи", TypeOperation.ADD], autoFocus: true});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {//если нажали ок и есть результат
-        this.addTask.emit(task);
+        console.log("добавление задачи = ", result.title);
+        this.addTask.emit(result);
       }
     });
   }

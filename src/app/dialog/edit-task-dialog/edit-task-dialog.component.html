@@ -41,7 +41,7 @@
 
   <mat-form-field>
     <input
-      matInput placeholder="Укажите сок выполнения"
+      matInput placeholder="Укажите срок выполнения"
       #inputDate
       readonly="true"
       [matDatepicker]="picker"
@@ -68,10 +68,12 @@
   <button mat-raised-button (click)="onCancel()">Отмена</button>
 
   <!--<div class="col-md-7 col-12 text-right">-->
-  <button mat-button class="green" *ngIf="dialogTask.completed&&canActivateDeactivate()" (click)="activate()">
+  <button mat-button class="green" *ngIf="dialogTask.completed === 1 && canActivateDeactivate()"
+          (click)="activate()">
     Активировать
   </button>
-  <button mat-button class="green" *ngIf="!dialogTask.completed&&canActivateDeactivate()" (click)="deActivate()">
+  <button mat-button class="green" *ngIf="dialogTask.completed === 0 && canActivateDeactivate()"
+          (click)="deActivate()">
     Завершить
   </button>
 

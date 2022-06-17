@@ -89,7 +89,10 @@ export class AppComponent implements OnInit {
         this.service.onUpdateTask(task).subscribe(() => {
           this.updateTaskAndStatistic();
         });*/
-
+    // @ts-ignore
+    this.taskService.update(task).subscribe(() => {
+      this.searchTasks(this.taskSearchCriteria);
+    });
   }
 
   //удаление задачи
@@ -108,6 +111,10 @@ export class AppComponent implements OnInit {
         this.service.onDeleteTask(task.id).subscribe(() => {
           this.updateTaskAndStatistic();
         });*/
+
+    this.taskService.delete(task.id).subscribe(() => {
+      this.searchTasks(this.taskSearchCriteria);
+    })
 
   }
 
@@ -143,6 +150,11 @@ export class AppComponent implements OnInit {
     /*    this.service.addTask(task).subscribe(result => {
           this.updateTaskAndStatistic();
         });*/
+    console.log("onAddTask = ", task)
+    // @ts-ignore
+    this.taskService.add(task).subscribe(() => {
+      this.searchTasks(this.taskSearchCriteria);
+    });
   }
 
   onAddCategories(categoryTitle: string) {

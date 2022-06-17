@@ -314,8 +314,8 @@
                            type="checkbox"
                            value=""
                            id="flexCheckDefault"
-                           [class.completed]="task.completed == 1"
-                           [checked]="task.completed == 1"
+                           [class.completed]="task.completed === 1"
+                           [checked]="task.completed === 1"
                            (click)="toggleTaskCompleted(task)">
                   </div>
                 </form>

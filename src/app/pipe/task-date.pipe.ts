@@ -9,7 +9,6 @@ export class TaskDatePipe implements PipeTransform {
   transform(date: Date | string, format: string = 'mediumDate'): string {
 
     if (date == null) {
-      console.log("date=", date);
       return "Без срока";
     }
 
