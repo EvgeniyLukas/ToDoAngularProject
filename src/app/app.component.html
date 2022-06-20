@@ -3,11 +3,12 @@
   class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
   id="sidenav-main">
   <!--(selectCategory)="onSelectCategory($event)"-->
+<!--  (addCategory)="onAddCategories($event)"
+  (updateCategory)="onUpdateCategory($event)"
+  (deleteCategory)="onDeleteCategory($event)"
+  (searchCategory)="onSearchCategory($event)"-->
+
   <app-categories
-    (addCategory)="onAddCategories($event)"
-    (updateCategory)="onUpdateCategory($event)"
-    (deleteCategory)="onDeleteCategory($event)"
-    (searchCategory)="onSearchCategory($event)"
 
     (selectCategoryNew)="selectCategory($event)"
     (searchCategoryNew)="searchCategory($event)"
@@ -16,6 +17,7 @@
     (deleteCategoryNew)="deleteCategory($event)"
 
     [selectedCategory]="selectedCategory"
+
     [categories]="categories"
 
   ></app-categories>
@@ -156,6 +158,7 @@
     </app-header>
 
     <app-stat
+      [statusBar] = "statusBar"
       [totalTasksInCategory]="totalTaskInCategory"
       [completeTaskInCategory]="completeTaskInCategory"
       [unCompleteTaskInCategory]="unCompleteCountCategory">
@@ -176,11 +179,12 @@
                  (addTask)="onAddTask($event)"
                  (updateTask)="onUpdateTask($event)"
                  (deleteTask)="onDeleteTask($event)"
-                 (selectCategory)="onSelectCategory($event)"
-
-                 (filterByTitle)="onSearchTask($event)"
-                 (filterByStatus)="onFilterByStatus($event)"
-                 (filterByPriority)="onFilterByPriority($event)">
+                 (selectCategory)="selectCategory($event)"
+      >
+                 <!--(selectCategory)="onSelectCategory($event)"-->
+<!--                 (filterByTitle)="onSearchTask($event)"-->
+<!--                 (filterByStatus)="onFilterByStatus($event)"-->
+<!--                 (filterByPriority)="onFilterByPriority($event)">-->
       </app-tasks>
       <app-footer>
 

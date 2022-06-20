@@ -13,9 +13,10 @@ import {CategoryDaoImplService} from "../../data/dao/json_impl/CategoryDaoImpl.s
   templateUrl: './edit-task-dialog.component.html',
   styleUrls: ['./edit-task-dialog.component.css']
 })
+/*@Inject(MAT_DIALOG_DATA) public data: [Task, string, TypeOperation]*/
 export class EditTaskDialogComponent implements OnInit {
   constructor(private matDialogRef: MatDialogRef<EditTaskDialogComponent>, //для работы с диалоговым окном
-              @Inject(MAT_DIALOG_DATA) public data: [Task, string, TypeOperation],//данные которые передали в диалоговое окно
+              @Inject(MAT_DIALOG_DATA) public data: [Task, string, Category[], Priority[]],//данные которые передали в диалоговое окно
               private categoryService: CategoryDaoImplService, private priorityService: PriorityDaoImplService,
               private matDialog: MatDialog) {//для открытия нового диалогового окна из текущего
   }
@@ -27,7 +28,7 @@ export class EditTaskDialogComponent implements OnInit {
 
   dialogTask!: Task
   tempTitle!: string
-  tempCategory!: Category
+  tempCategory!: Category;
   oldCategory!: Category;
   temPriority!: Priority;
   tmpDate!: Date;
@@ -37,17 +38,21 @@ export class EditTaskDialogComponent implements OnInit {
   ngOnInit(): void {
     this.dialogTask = this.data[0];
     this.dialogTitle = this.data[1];
-    this.typeOperation = this.data[2];
+    this.categories = this.data[2];//для выпадающего списка
+    this.priorities = this.data[3];//для выпадающего списка
+    //this.typeOperation = this.data[2];
 
     this.tempTitle = this.dialogTask.title;
-    // @ts-ignore
-    this.tempCategory = this.dialogTask.category;
 
-/*    if (this.dialogTask.category) {
+
+    if (this.dialogTask.category) {
       this.oldCategory = this.dialogTask.category;
-    }*/
-    // @ts-ignore
-    this.temPriority = this.dialogTask.priority;
+      this.tempCategory = this.dialogTask.category;
+      console.log("tempCategory=", this.tempCategory);
+    }
+    if (this.dialogTask.priority) {
+      this.temPriority = this.dialogTask.priority;
+    }
     // @ts-ignore
     this.tmpDate = new Date(this.dialogTask.date);
 
@@ -65,8 +70,8 @@ export class EditTaskDialogComponent implements OnInit {
     this.dialogTask.title = this.tempTitle;
     this.dialogTask.category = this.tempCategory;
     this.dialogTask.priority = this.temPriority;
-    this.dialogTask.date = this.tmpDate;
 
+    this.dialogTask.date = this.tmpDate || null;
 
     this.matDialogRef.close(this.dialogTask);
   }

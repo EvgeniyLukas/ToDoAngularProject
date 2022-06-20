@@ -89,7 +89,6 @@
     <li class="nav-item pointer"
         *ngFor="let category of categories; let index = index"
         (click)="showTasksByCategory(category)"
-
         (mouseleave)="showEditIcon(null!)"
         (mouseenter)="showEditIcon(index)"
         [class.bg-gradient-primary]="selectedCategory === category"

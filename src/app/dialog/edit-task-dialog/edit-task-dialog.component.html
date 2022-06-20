@@ -19,9 +19,9 @@
   <!--форма где будет выпадающий список и смена категории-->
   <mat-form-field>
     <mat-label>Укажите категорию</mat-label>
-    <mat-select [(ngModel)]="tempCategory"><!--[(ngModel)] считывает данные с переменной и записывает новые в нее-->
+    <mat-select [(value)]="tempCategory.id"><!--[(ngModel)] считывает данные с переменной и записывает новые в нее-->
       <mat-option [value]="null">Без категории</mat-option>
-      <mat-option *ngFor="let cat of categories" [value]="cat">
+      <mat-option *ngFor="let cat of categories" [value]="cat.id">
         {{cat.title}}
       </mat-option>
     </mat-select>
@@ -31,9 +31,9 @@
   <!--форма где будет выпадающий список и смена приоритетов-->
   <mat-form-field>
     <mat-label>Укажите приоритет</mat-label>
-    <mat-select [(ngModel)]="temPriority"><!--[(ngModel)] считывает данные с переменной и записывает новые в нее-->
+    <mat-select [(value)]="temPriority.id"><!--[(ngModel)] считывает данные с переменной и записывает новые в нее-->
       <mat-option [value]="null">Без приоритетов</mat-option>
-      <mat-option *ngFor="let priority of priorities" [value]="priority">
+      <mat-option *ngFor="let priority of priorities" [value]="priority.id">
         {{priority.title}}
       </mat-option>
     </mat-select>

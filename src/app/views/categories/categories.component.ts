@@ -93,6 +93,8 @@ export class CategoriesComponent implements OnInit {
     this.selectedCategory = category;
 
     this.selectCategoryNew.emit(this.selectedCategory);
+    console.log("showTaskByCategory = ", this.selectedCategory)
+
   }
 
   showEditIcon(index: number) {

@@ -86,7 +86,7 @@ registerLocaleData(localeRu);
     },
     {
       provide: STATUS_URL_TOKEN,
-      useValue: "http://localhost:8080/status"
+      useValue: "http://localhost:8080/status/status"
     }
   ],
   entryComponents: [
